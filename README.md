@@ -1,3 +1,20 @@
+This fork adds support for testing against multiple server IDs. In future i might further modify this project to better suit my needs, that's why i'll maintain this separate fork instead of just creating a pull request.
+
+The following README has been slightly modified to incorporate the changes i'v made and i suggest reading it before cloning the repo.
+
+A docker image has been created in order to run this fork as a container. It is currently being hosted on DockerHub and can be downloaded with
+```shell
+docker pull s1nnerman89/speedflux_mod
+```
+
+The container's environment variables are described below; they are the same as the original project, the only difference being that now
+- SPEEDTEST_SERVER_ID 
+
+can be a comma-separated list of server IDs.
+
+Currently the script runs the test against all specified servers, waits the environment variable-defined interval and then runs the tests again. In the future i will (maybe) implement a toggable round-robin or random testing methodology.
+
+All credit for the original idea and implementation goes to their creators.
 
 
 
