@@ -1,6 +1,6 @@
 FROM python:3.8-slim-buster
-LABEL maintainer="Breadlysm" \
-    description="Original by Aiden Gilmartin. Maintained by Breadlysm"
+LABEL maintainer="s1nnerman89" \
+    description="Original by Aiden Gilmartin. Modified by Breadlysm. Further modifications by s1nnerman89. Maintained by s1nnerman89"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
