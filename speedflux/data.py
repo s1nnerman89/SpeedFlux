@@ -7,38 +7,41 @@ import speedflux
 
 
 def speedtest():
+    serverid_array = speedflux.CONFIG.SPEEDTEST_SERVER_ID.split(",")
+    leng = len(serverid_array)
     if not speedflux.CONFIG.SPEEDTEST_SERVER_ID:
         speedtest = subprocess.run(
             ["speedtest", "--accept-license", "--accept-gdpr", "-f", "json"],
             capture_output=True)
         speedflux.LOG.info("Automatic server choice")
     else:
-        speedtest = subprocess.run(
-            ["speedtest", "--accept-license", "--accept-gdpr", "-f", "json",
-                f"--server-id={speedflux.CONFIG.SPEEDTEST_SERVER_ID}"],
-            capture_output=True)
-        speedflux.LOG.info("Manual server choice : "
-                           f"ID = {speedflux.CONFIG.SPEEDTEST_SERVER_ID}")
+        for id in range(leng):
+            speedtest = subprocess.run(
+                ["speedtest", "--accept-license", "--accept-gdpr", "-f", "json",
+                f"--server-id={serverid_array[id]}"],
+                capture_output=True)
+            speedflux.LOG.info("Manual server choice : "
+                f"ID = {serverid_array[id]}")
 
-    if speedtest.returncode == 0:  # Speedtest was successful.
-        speedflux.LOG.info("Speedtest Successful...Writing to Influx")
-        data_json = json.loads(speedtest.stdout)
-        speedflux.LOG.info(F"""Speedtest Data:
-            time: {data_json['timestamp']}
-            ping: {data_json['ping']['latency']}ms
-            download: {data_json['download']['bandwidth']/125000}Mb/s
-            upload: {data_json['upload']['bandwidth'] / 125000}Mb/s
-            isp: {data_json['isp']}
-            ext. IP: {data_json['interface']['externalIp']}
-            server id: {data_json['server']['id']}
-            server location: ({data_json['server']['name']} @ \
-                {data_json['server']['location']})
-            """)
-        speedflux.INFLUXDB.process_data(data_json)
-    else:  # Speedtest failed.
-        speedflux.LOG.info("Speedtest Failed :")
-        speedflux.LOG.debug(speedtest.stderr)
-        speedflux.LOG.debug(speedtest.stdout)
+            if speedtest.returncode == 0:  # Speedtest was successful.
+                speedflux.LOG.info("Speedtest Successful...Writing to Influx")
+                data_json = json.loads(speedtest.stdout)
+                speedflux.LOG.info(F"""Speedtest Data:
+                    time: {data_json['timestamp']}
+                    ping: {data_json['ping']['latency']}ms
+                    download: {data_json['download']['bandwidth']/125000}Mb/s
+                    upload: {data_json['upload']['bandwidth'] / 125000}Mb/s
+                    isp: {data_json['isp']}
+                    ext. IP: {data_json['interface']['externalIp']}
+                    server id: {data_json['server']['id']}
+                    server location: ({data_json['server']['name']} @ \
+                        {data_json['server']['location']})
+                    """)
+                speedflux.INFLUXDB.process_data(data_json)
+            else:  # Speedtest failed.
+                speedflux.LOG.info("Speedtest Failed :")
+                speedflux.LOG.debug(speedtest.stderr)
+                speedflux.LOG.debug(speedtest.stdout)
 
 
 def pingtest():
