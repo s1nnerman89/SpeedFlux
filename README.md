@@ -1,5 +1,20 @@
+This fork adds support for testing against multiple server IDs. In future i might further modify this project to better suit my needs, that's why i'll maintain this separate fork instead of just creating a pull request.
 
+The following README has been slightly modified to incorporate the changes i'v made and i suggest reading it before cloning the repo.
 
+A docker image has been created in order to run this fork as a container. It is currently being hosted on DockerHub and can be downloaded with
+```shell
+docker pull s1nnerman89/speedflux_mod
+```
+
+The container's environment variables are described below; they are the same as the original project, the only difference being that now
+- SPEEDTEST_SERVER_ID 
+
+can be a comma-separated list of server IDs.
+
+Currently the script runs the test against all specified servers, waits the environment variable-defined interval and then runs the tests again. In the future i will (maybe) implement a toggable round-robin or random testing methodology.
+
+All credit for the original idea and implementation goes to their creators.
 
 # SpeedFlux <img src='https://user-images.githubusercontent.com/3665468/119735610-974a0500-be4a-11eb-9149-dd12ceee03df.png' width='75'>
 ---
@@ -43,7 +58,7 @@ The variables available are:
 - INFLUX_DB_DATABASE = default - speedtests
 - INFLUX_DB_TAGS = default - None * See below for options, '*' widcard for all *
 - SPEEDTEST_INTERVAL = default - 5 (minutes)
-- SPEEDTEST_SERVER_ID = default - {blank} * id from https://c.speedtest.net/speedtest-servers-static.php *
+- SPEEDTEST_SERVER_ID = default - {blank} * comma-separated IDs from https://c.speedtest.net/speedtest-servers-static.php *
 - PING_INTERVAL = default - 5 (seconds)
 - PING_TARGETS = default - 1.1.1.1, 8.8.8.8 (csv of hosts to ping)
 - LOG_TYPE = info
