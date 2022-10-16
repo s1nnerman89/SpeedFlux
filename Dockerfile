@@ -9,7 +9,7 @@ RUN apt-get update
 RUN apt-get -q -y install --no-install-recommends apt-utils gnupg1 apt-transport-https dirmngr curl
 
 # Install Speedtest
-RUN curl -s https://install.speedtest.net/app/cli/install.deb.sh --output /opt/install.deb.sh
+RUN curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh --output /opt/install.deb.sh
 RUN bash /opt/install.deb.sh
 RUN apt-get update && apt-get -q -y install speedtest
 RUN rm /opt/install.deb.sh
@@ -25,5 +25,5 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt 
 COPY . .
 
-# Excetution
+# Execution
 CMD ["python", "main.py"]
